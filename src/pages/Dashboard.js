@@ -5,17 +5,56 @@ import axios from "axios";
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [filters, setFilters] = useState({
+    name: "",
+    category: "",
+    isFeatured: "",
+    sortBy: "name", // predeterminado a 'name'
+    sortOrder: "asc", // predeterminado a 'ascendente'
+  });
 
   useEffect(() => {
+    fetchAllProducts();
+  }, []);
+
+  const fetchAllProducts = () => {
     axios
       .get("http://localhost:5000/api/products")
-      .then((response) => {
-        setProducts(response.data);
-      })
-      .catch((error) => {
-        console.error("Error al obtener los productos:", error);
-      });
-  }, []);
+      .then((response) => setProducts(response.data))
+      .catch((error) =>
+        console.error("Error al obtener los productos:", error)
+      );
+  };
+
+  // Llamada a la API con filtros
+  useEffect(() => {
+    const fetchFilteredProducts = () => {
+      const cleanFilters = {
+        ...filters,
+        name: filters.name || null,
+        category: filters.category || null,
+        isFeatured: filters.isFeatured !== "Todos" ? filters.isFeatured : null,
+        sortBy: filters.sortBy || "name",
+        sortOrder: filters.sortOrder || "asc",
+      };
+
+      axios
+        .get("http://localhost:5000/api/products", { params: cleanFilters })
+        .then((response) => setProducts(response.data))
+        .catch((error) =>
+          console.error("Error al obtener los productos:", error)
+        );
+    };
+
+    fetchFilteredProducts();
+  }, [filters]);
+
+  const handleFilterChange = (e) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [e.target.name]: e.target.value !== "" ? e.target.value : undefined,
+    }));
+  };
 
   const handleDeleteProduct = (id) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
@@ -41,6 +80,13 @@ const Dashboard = () => {
     setSelectedImage(null);
   };
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
+    }).format(value);
+  };
+
   return (
     <div
       className="min-h-screen bg-cover bg-center"
@@ -53,6 +99,68 @@ const Dashboard = () => {
         <Link to="/new-product" className="text-green-500">
           + Agregar Nuevo Producto
         </Link>
+        <div className="flex space-x-4 mb-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Buscar por nombre"
+            value={filters.name}
+            onChange={handleFilterChange}
+            className="border p-2"
+          />
+          <select
+            name="category"
+            value={filters.category}
+            onChange={handleFilterChange}
+            className="border p-2"
+          >
+            <option value="">Todas las categorías</option>
+            <option value="Alimento">Alimento</option>
+            <option value="Accesorio">Accesorio</option>
+            <option value="Indumentaria">Indumentaria</option>
+            <option value="Juguete">Juguete</option>
+          </select>
+          <select
+            name="animalType"
+            value={filters.animalType}
+            onChange={handleFilterChange}
+            className="border p-2"
+          >
+            <option value="">Todos los animales</option>
+            <option value="Perro">Perro</option>
+            <option value="Gato">Gato</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <select
+            name="sortBy"
+            value={filters.sortBy}
+            onChange={handleFilterChange}
+            className="border p-2"
+          >
+            <option value="">Ordenar por</option>
+            <option value="name">Nombre</option>
+            <option value="price">Precio</option>
+          </select>
+          <select
+            name="sortOrder"
+            value={filters.sortOrder}
+            onChange={handleFilterChange}
+            className="border p-2"
+          >
+            <option value="asc">Ascendente</option>
+            <option value="desc">Descendente</option>
+          </select>
+          <select
+            name="isFeatured"
+            value={filters.isFeatured}
+            onChange={handleFilterChange}
+            className="border p-2"
+          >
+            <option value="">Todos</option>
+            <option value="true">Destacados</option>
+            <option value="false">No destacados</option>
+          </select>
+        </div>
         <table className="w-full my-4 border-collapse border border-gray-300">
           <thead>
             <tr>
@@ -64,6 +172,9 @@ const Dashboard = () => {
               <th className="border border-gray-300 p-2 text-center">Precio</th>
               <th className="border border-gray-300 p-2 text-center">
                 Categoría
+              </th>
+              <th className="border border-gray-300 p-2 text-center">
+                Destacado
               </th>
               <th className="border border-gray-300 p-2 text-center">
                 Acciones
@@ -88,17 +199,20 @@ const Dashboard = () => {
                   {product.description}
                 </td>
                 <td className="border border-gray-300 p-2 text-center">
-                  {product.price} USD
+                  {formatCurrency(product.price)}
                 </td>
                 <td className="border border-gray-300 p-2 text-center">
                   {product.category}
+                </td>
+                <td className="border border-gray-300 p-2 text-center">
+                  {product.isFeatured ? "✔️" : "❌"}
                 </td>
                 <td className="border border-gray-300 p-2 text-center">
                   <Link
                     to={`/edit-product/${product._id}`}
                     className="text-blue-500"
                   >
-                    Editar
+                    O Editar
                   </Link>
                   <button
                     onClick={() => handleDeleteProduct(product._id)}
@@ -122,7 +236,12 @@ const Dashboard = () => {
             <img
               src={selectedImage}
               alt="Producto"
-              style={{ maxWidth: '600px', maxHeight: '80vh', width: 'auto', height: 'auto' }}
+              style={{
+                maxWidth: "600px",
+                maxHeight: "80vh",
+                width: "auto",
+                height: "auto",
+              }}
             />
             <button
               className="absolute top-2 right-2 bg-white text-black rounded-full p-2 focus:outline-none"
