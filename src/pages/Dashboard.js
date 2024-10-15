@@ -12,6 +12,8 @@ const Dashboard = () => {
     sortBy: "name", // predeterminado a 'name'
     sortOrder: "asc", // predeterminado a 'ascendente'
   });
+  const [showModal, setShowModal] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
 
   useEffect(() => {
     fetchAllProducts();
@@ -56,12 +58,32 @@ const Dashboard = () => {
     }));
   };
 
-  const handleDeleteProduct = (id) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+  const resetFilters = () => {
+    setFilters({
+      name: "",
+      category: "",
+      animalType: "",
+      isFeatured: "",
+      sortBy: "name",
+      sortOrder: "asc",
+    });
+  };
+
+  const handleDeleteClick = (id) => {
+    setProductToDelete(id);
+    setShowModal(true);
+  };
+
+  const confirmDeleteProduct = () => {
+    if (productToDelete) {
       axios
-        .delete(`http://localhost:5000/api/products/${id}`)
+        .delete(`http://localhost:5000/api/products/${productToDelete}`)
         .then(() => {
-          setProducts(products.filter((product) => product._id !== id));
+          setProducts(
+            products.filter((product) => product._id !== productToDelete)
+          );
+          setShowModal(false);
+          setProductToDelete(null);
         })
         .catch((error) => {
           console.error("Error al eliminar el producto:", error);
@@ -117,6 +139,7 @@ const Dashboard = () => {
             <option value="">Todas las categorías</option>
             <option value="Alimento">Alimento</option>
             <option value="Accesorio">Accesorio</option>
+            <option value="Aseo">Aseo</option>
             <option value="Indumentaria">Indumentaria</option>
             <option value="Juguete">Juguete</option>
           </select>
@@ -160,6 +183,9 @@ const Dashboard = () => {
             <option value="true">Destacados</option>
             <option value="false">No destacados</option>
           </select>
+          <button onClick={resetFilters} className="p-2 bg-gray-200 rounded">
+            RESET
+          </button>
         </div>
         <table className="w-full my-4 border-collapse border border-gray-300">
           <thead>
@@ -215,7 +241,7 @@ const Dashboard = () => {
                     O Editar
                   </Link>
                   <button
-                    onClick={() => handleDeleteProduct(product._id)}
+                    onClick={() => handleDeleteClick(product._id)}
                     className="text-red-500 ml-2"
                   >
                     X Eliminar
@@ -226,6 +252,30 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <p className="text-xl mb-4">
+              ¿Estás seguro de que deseas eliminar este producto?
+            </p>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-gray-300 px-4 py-2 rounded"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmDeleteProduct}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {selectedImage && (
         <div

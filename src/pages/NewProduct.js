@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ProductForm from "../components/ProductForm";
 
 const NewProduct = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Hace scroll al inicio de la página
+  }, []);
 
   const handleCreateProduct = (product) => {
     axios

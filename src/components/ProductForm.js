@@ -127,6 +127,7 @@ const ProductForm = ({ productId, onSubmit }) => {
             <option value="">Selecciona una categoría</option>
             <option value="Alimento">Alimento</option>
             <option value="Accesorio">Accesorio</option>
+            <option value="Aseo">Aseo</option>
             <option value="Indumentaria">Indumentaria</option>
             <option value="Juguete">Juguete</option>
           </select>

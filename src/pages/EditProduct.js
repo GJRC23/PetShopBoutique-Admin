@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ProductForm from "../components/ProductForm";
@@ -6,6 +6,10 @@ import ProductForm from "../components/ProductForm";
 const EditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleUpdateProduct = (updatedProduct) => {
     axios
