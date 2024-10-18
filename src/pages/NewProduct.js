@@ -12,7 +12,7 @@ const NewProduct = () => {
 
   const handleCreateProduct = (product) => {
     axios
-      .post("https://petshop-boutique.web.app/api/products", product)
+      .post("https://backpetshopboutique.onrender.com/api/products", product)
       .then(() => {
         navigate("/"); // Redirige al Dashboard después de agregar el producto
       })
@@ -30,7 +30,7 @@ const NewProduct = () => {
       style={{ backgroundImage: "url('/images/FondoDashboardAdmin.png')" }}
     >
       <div className="fixed left-4">
-        <button onClick={() => navigate("/")} className="text-6xl font-bold">
+        <button onClick={() => navigate("/administracion")} className="text-6xl font-bold">
           ←
         </button>
       </div>

@@ -13,9 +13,9 @@ const EditProduct = () => {
 
   const handleUpdateProduct = (updatedProduct) => {
     axios
-      .put(`https://petshop-boutique.web.app/api/products/${id}`, updatedProduct)
+      .put(`https://backpetshopboutique.onrender.com/api/products/${id}`, updatedProduct)
       .then(() => {
-        navigate("/"); // Redirige al Dashboard después de editar el producto
+        navigate("/administracion"); // Redirige al Dashboard después de editar el producto
       })
       .catch((error) => {
         console.error("Error al actualizar el producto:", error);
@@ -31,7 +31,7 @@ const EditProduct = () => {
       style={{ backgroundImage: "url('/images/FondoDashboardAdmin.png')" }}
     >
       <div className="fixed left-4">
-        <button onClick={() => navigate("/")} className="text-6xl font-bold">
+        <button onClick={() => navigate("/administracion ")} className="text-6xl font-bold">
           ←
         </button>
       </div>

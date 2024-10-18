@@ -18,7 +18,7 @@ const ProductForm = ({ productId, onSubmit }) => {
   useEffect(() => {
     if (productId) {
       axios
-        .get(`http://localhost:5000/api/products/${productId}`)
+        .get(`https://backpetshopboutique.onrender.com/${productId}`)
         .then((response) => {
           setProduct(response.data);
         })

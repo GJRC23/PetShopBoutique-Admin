@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   const fetchAllProducts = () => {
     axios
-      .get("https://petshop-boutique.web.app/api/products")
+      .get("https://backpetshopboutique.onrender.com/api/products")
       .then((response) => setProducts(response.data))
       .catch((error) =>
         console.error("Error al obtener los productos:", error)
@@ -41,7 +41,9 @@ const Dashboard = () => {
       };
 
       axios
-        .get("https://petshop-boutique.web.app/api/products", { params: cleanFilters })
+        .get("https://backpetshopboutique.onrender.com/api/products", {
+          params: cleanFilters,
+        })
         .then((response) => setProducts(response.data))
         .catch((error) =>
           console.error("Error al obtener los productos:", error)
@@ -77,7 +79,9 @@ const Dashboard = () => {
   const confirmDeleteProduct = () => {
     if (productToDelete) {
       axios
-        .delete(`https://petshop-boutique.web.app/api/products/${productToDelete}`)
+        .delete(
+          `https://backpetshopboutique.onrender.com/api/products/${productToDelete}`
+        )
         .then(() => {
           setProducts(
             products.filter((product) => product._id !== productToDelete)
@@ -208,47 +212,48 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product._id} className="border border-gray-300">
-                <td className="border border-gray-300 p-2 text-center">
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-16 h-16 object-cover mx-auto cursor-pointer"
-                    onClick={() => handleImageClick(product.imageUrl)}
-                  />
-                </td>
-                <td className="border border-gray-300 p-2 text-center">
-                  {product.name}
-                </td>
-                <td className="border border-gray-300 p-2 text-center w-48 max-w-xs whitespace-normal break-words overflow-hidden">
-                  {product.description}
-                </td>
-                <td className="border border-gray-300 p-2 text-center">
-                  {formatCurrency(product.price)}
-                </td>
-                <td className="border border-gray-300 p-2 text-center">
-                  {product.category}
-                </td>
-                <td className="border border-gray-300 p-2 text-center">
-                  {product.isFeatured ? "✔️" : "❌"}
-                </td>
-                <td className="border border-gray-300 p-2 text-center">
-                  <Link
-                    to={`/edit-product/${product._id}`}
-                    className="text-blue-500"
-                  >
-                    O Editar
-                  </Link>
-                  <button
-                    onClick={() => handleDeleteClick(product._id)}
-                    className="text-red-500 ml-2"
-                  >
-                    X Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {Array.isArray(products) &&
+              products.map((product) => (
+                <tr key={product._id} className="border border-gray-300">
+                  <td className="border border-gray-300 p-2 text-center">
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-16 h-16 object-cover mx-auto cursor-pointer"
+                      onClick={() => handleImageClick(product.imageUrl)}
+                    />
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    {product.name}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center w-48 max-w-xs whitespace-normal break-words overflow-hidden">
+                    {product.description}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    {formatCurrency(product.price)}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    {product.category}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    {product.isFeatured ? "✔️" : "❌"}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <Link
+                      to={`/edit-product/${product._id}`}
+                      className="text-blue-500"
+                    >
+                      O Editar
+                    </Link>
+                    <button
+                      onClick={() => handleDeleteClick(product._id)}
+                      className="text-red-500 ml-2"
+                    >
+                      X Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
