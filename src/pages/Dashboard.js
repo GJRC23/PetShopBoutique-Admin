@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   const fetchAllProducts = () => {
     axios
-      .get("http://localhost:5000/api/products")
+      .get("https://petshop-boutique.web.app/api/products")
       .then((response) => setProducts(response.data))
       .catch((error) =>
         console.error("Error al obtener los productos:", error)
@@ -41,7 +41,7 @@ const Dashboard = () => {
       };
 
       axios
-        .get("http://localhost:5000/api/products", { params: cleanFilters })
+        .get("https://petshop-boutique.web.app/api/products", { params: cleanFilters })
         .then((response) => setProducts(response.data))
         .catch((error) =>
           console.error("Error al obtener los productos:", error)
