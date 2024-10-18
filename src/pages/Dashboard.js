@@ -77,7 +77,7 @@ const Dashboard = () => {
   const confirmDeleteProduct = () => {
     if (productToDelete) {
       axios
-        .delete(`http://localhost:5000/api/products/${productToDelete}`)
+        .delete(`https://petshop-boutique.web.app/api/products/${productToDelete}`)
         .then(() => {
           setProducts(
             products.filter((product) => product._id !== productToDelete)

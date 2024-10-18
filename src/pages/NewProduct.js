@@ -12,7 +12,7 @@ const NewProduct = () => {
 
   const handleCreateProduct = (product) => {
     axios
-      .post("http://localhost:5000/api/products", product)
+      .post("https://petshop-boutique.web.app/api/products", product)
       .then(() => {
         navigate("/"); // Redirige al Dashboard después de agregar el producto
       })

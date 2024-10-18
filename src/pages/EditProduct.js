@@ -13,7 +13,7 @@ const EditProduct = () => {
 
   const handleUpdateProduct = (updatedProduct) => {
     axios
-      .put(`http://localhost:5000/api/products/${id}`, updatedProduct)
+      .put(`https://petshop-boutique.web.app/api/products/${id}`, updatedProduct)
       .then(() => {
         navigate("/"); // Redirige al Dashboard después de editar el producto
       })
