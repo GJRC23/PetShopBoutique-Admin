@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [filters, setFilters] = useState({
     name: "",
@@ -20,12 +21,17 @@ const Dashboard = () => {
   }, []);
 
   const fetchAllProducts = () => {
+    setLoading(true);
     axios
       .get("https://backpetshopboutique.onrender.com/api/products")
-      .then((response) => setProducts(response.data))
-      .catch((error) =>
-        console.error("Error al obtener los productos:", error)
-      );
+      .then((response) => {
+        setProducts(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener los productos:", error);
+        setLoading(false);
+      });
   };
 
   // Llamada a la API con filtros
@@ -118,6 +124,9 @@ const Dashboard = () => {
       className="min-h-screen bg-cover bg-center"
       style={{ backgroundImage: "url('/images/FondoDashboardAdmin.png')" }}
     >
+      {loading ? (
+      <p className="text-center mt-4">Cargando productos...</p>
+    ) : (
       <div className="bg-white bg-opacity-80 p-6 rounded-lg max-w-6xl mx-auto shadow-lg h-[80vh] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4 text-center">
           ADMINISTRACIÓN DE PRODUCTOS
@@ -257,7 +266,8 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-
+    )}
+    
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg">
@@ -307,6 +317,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+    
     </div>
   );
 };
