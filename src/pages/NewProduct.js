@@ -14,7 +14,7 @@ const NewProduct = () => {
     axios
       .post("https://backpetshopboutique.onrender.com/api/products", product)
       .then(() => {
-        navigate("/"); // Redirige al Dashboard después de agregar el producto
+        navigate("/administracion");
       })
       .catch((error) => {
         console.error("Error al crear el producto:", error);

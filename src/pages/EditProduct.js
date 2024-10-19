@@ -15,7 +15,7 @@ const EditProduct = () => {
     axios
       .put(`https://backpetshopboutique.onrender.com/api/products/${id}`, updatedProduct)
       .then(() => {
-        navigate("/administracion"); // Redirige al Dashboard después de editar el producto
+        navigate("/administracion");
       })
       .catch((error) => {
         console.error("Error al actualizar el producto:", error);
