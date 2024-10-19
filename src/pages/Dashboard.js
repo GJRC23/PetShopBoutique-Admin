@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [filters, setFilters] = useState({
     name: "",
     category: "",
     isFeatured: "",
-    sortBy: "name", // predeterminado a 'name'
-    sortOrder: "asc", // predeterminado a 'ascendente'
+    sortBy: "",
+    sortOrder: "asc",
   });
   const [showModal, setShowModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -21,17 +22,12 @@ const Dashboard = () => {
   }, []);
 
   const fetchAllProducts = () => {
-    setLoading(true);
     axios
       .get("https://backpetshopboutique.onrender.com/api/products")
-      .then((response) => {
-        setProducts(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error al obtener los productos:", error);
-        setLoading(false);
-      });
+      .then((response) => setProducts(response.data))
+      .catch((error) =>
+        console.error("Error al obtener los productos:", error)
+      );
   };
 
   // Llamada a la API con filtros
@@ -72,7 +68,7 @@ const Dashboard = () => {
       category: "",
       animalType: "",
       isFeatured: "",
-      sortBy: "name",
+      sortBy: "",
       sortOrder: "asc",
     });
   };
@@ -119,158 +115,197 @@ const Dashboard = () => {
     }).format(value);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("authenticated");
+    localStorage.removeItem("expiration");
+    window.location.href = "/login"; // Redirige al login
+  };
+
   return (
     <div
-      className="min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/FondoDashboardAdmin.png')" }}
+      className="min-h-screen bg-center bg-no-repeat bg-fixed bg-contain"
+      style={{
+        backgroundImage: "url('/images/FondoDashboardAdmin.png')",
+        backgroundColor: "#FBFBFD",
+      }}
     >
-      {loading ? (
-      <p className="text-center mt-4">Cargando productos...</p>
-    ) : (
-      <div className="bg-white bg-opacity-80 p-6 rounded-lg max-w-6xl mx-auto shadow-lg h-[80vh] overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4 text-center">
-          ADMINISTRACIÓN DE PRODUCTOS
-        </h2>
-        <Link to="/new-product" className="text-green-500">
-          + Agregar Nuevo Producto
-        </Link>
-        <div className="flex space-x-4 mb-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Buscar por nombre"
-            value={filters.name}
-            onChange={handleFilterChange}
-            className="border p-2"
-          />
-          <select
-            name="category"
-            value={filters.category}
-            onChange={handleFilterChange}
-            className="border p-2"
+      <div
+        className={`bg-white bg-opacity-80 p-6 rounded-lg max-w-6xl mx-auto shadow-lg ${
+          showModal ? "pointer-events-none opacity-50" : ""
+        }`}
+      >
+        <div className="sticky top-0 bg-white z-10">
+          <button
+            onClick={handleLogout}
+            className="logout-button font-semibold text-sm sm:text-base"
           >
-            <option value="">Todas las categorías</option>
-            <option value="Alimento">Alimento</option>
-            <option value="Accesorio">Accesorio</option>
-            <option value="Aseo">Aseo</option>
-            <option value="Indumentaria">Indumentaria</option>
-            <option value="Juguete">Juguete</option>
-          </select>
-          <select
-            name="animalType"
-            value={filters.animalType}
-            onChange={handleFilterChange}
-            className="border p-2"
-          >
-            <option value="">Todos los animales</option>
-            <option value="Perro">Perro</option>
-            <option value="Gato">Gato</option>
-            <option value="Otros">Otros</option>
-          </select>
-          <select
-            name="sortBy"
-            value={filters.sortBy}
-            onChange={handleFilterChange}
-            className="border p-2"
-          >
-            <option value="">Ordenar por</option>
-            <option value="name">Nombre</option>
-            <option value="price">Precio</option>
-          </select>
-          <select
-            name="sortOrder"
-            value={filters.sortOrder}
-            onChange={handleFilterChange}
-            className="border p-2"
-          >
-            <option value="asc">Ascendente</option>
-            <option value="desc">Descendente</option>
-          </select>
-          <select
-            name="isFeatured"
-            value={filters.isFeatured}
-            onChange={handleFilterChange}
-            className="border p-2"
-          >
-            <option value="">Todos</option>
-            <option value="true">Destacados</option>
-            <option value="false">No destacados</option>
-          </select>
-          <button onClick={resetFilters} className="p-2 bg-gray-200 rounded">
-            RESET
+            ← CERRAR SESIÓN
           </button>
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">
+            PETSHOP BOUTIQUE - ADMINISTRACIÓN DE PRODUCTOS
+          </h2>
+          <div className="text-green-500 mb-4">
+            <Link
+              to="/new-product"
+              className="text-green-500 mb-4 font-semibold"
+            >
+              + AGREGAR NUEVO PRODUCTO
+            </Link>
+          </div>
+          <div className="overflow-x-auto mb-2">
+            <div className="flex flex-wrap space-x-2 sm:space-x-3 justify-center mb-2">
+              <button onClick={resetFilters} className="p-2 rounded">
+                <FontAwesomeIcon icon={faSyncAlt} />
+              </button>
+              <input
+                type="text"
+                name="name"
+                placeholder="Buscar por nombre"
+                value={filters.name}
+                onChange={handleFilterChange}
+                className="border p-2"
+              />
+              <select
+                name="category"
+                value={filters.category}
+                onChange={handleFilterChange}
+                className="border p-2"
+              >
+                <option value="">Categorías</option>
+                <option value="Alimento">Alimento</option>
+                <option value="Accesorio">Accesorio</option>
+                <option value="Aseo">Aseo</option>
+                <option value="Indumentaria">Indumentaria</option>
+                <option value="Juguete">Juguete</option>
+              </select>
+              <select
+                name="animalType"
+                value={filters.animalType}
+                onChange={handleFilterChange}
+                className="border p-2"
+              >
+                <option value="">Animales</option>
+                <option value="Perro">Perro</option>
+                <option value="Gato">Gato</option>
+                <option value="Otros">Otros</option>
+              </select>
+              <select
+                name="sortBy"
+                value={filters.sortBy}
+                onChange={handleFilterChange}
+                className="border p-2"
+              >
+                <option value="">Ordenar Por</option>
+                <option value="name">Nombre</option>
+                <option value="price">Precio</option>
+              </select>
+              <select
+                name="sortOrder"
+                value={filters.sortOrder}
+                onChange={handleFilterChange}
+                className="border p-2"
+              >
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
+              </select>
+              <select
+                name="isFeatured"
+                value={filters.isFeatured}
+                onChange={handleFilterChange}
+                className="border p-2"
+              >
+                <option value="">Todos</option>
+                <option value="true">Destacados</option>
+                <option value="false">No destacados</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <table className="w-full my-4 border-collapse border border-gray-300">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 p-2 text-center">Imagen</th>
-              <th className="border border-gray-300 p-2 text-center">Nombre</th>
-              <th className="border border-gray-300 p-2 text-center">
-                Descripción
-              </th>
-              <th className="border border-gray-300 p-2 text-center">Precio</th>
-              <th className="border border-gray-300 p-2 text-center">
-                Categoría
-              </th>
-              <th className="border border-gray-300 p-2 text-center">
-                Destacado
-              </th>
-              <th className="border border-gray-300 p-2 text-center">
-                Acciones
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(products) &&
-              products.map((product) => (
-                <tr key={product._id} className="border border-gray-300">
-                  <td className="border border-gray-300 p-2 text-center">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-16 h-16 object-cover mx-auto cursor-pointer"
-                      onClick={() => handleImageClick(product.imageUrl)}
-                    />
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    {product.name}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center w-48 max-w-xs whitespace-normal break-words overflow-hidden">
-                    {product.description}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    {formatCurrency(product.price)}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    {product.category}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    {product.isFeatured ? "✔️" : "❌"}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    <Link
-                      to={`/edit-product/${product._id}`}
-                      className="text-blue-500"
-                    >
-                      O Editar
-                    </Link>
-                    <button
-                      onClick={() => handleDeleteClick(product._id)}
-                      className="text-red-500 ml-2"
-                    >
-                      X Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+
+        <div className="max-h-[60vh] overflow-y-auto">
+          <table className="w-full my-4 border-collapse border border-gray-300">
+            <thead>
+              <tr>
+                <th className="border border-gray-300 p-2 text-center">
+                  Imagen
+                </th>
+                <th className="border border-gray-300 p-2 text-center">
+                  Nombre
+                </th>
+                <th className="border border-gray-300 p-2 text-center">
+                  Descripción
+                </th>
+                <th className="border border-gray-300 p-2 text-center">
+                  Precio
+                </th>
+                <th className="border border-gray-300 p-2 text-center">
+                  Categoría
+                </th>
+                <th className="border border-gray-300 p-2 text-center">
+                  Destacado
+                </th>
+                <th className="border border-gray-300 p-2 text-center">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(products) &&
+                products.map((product) => (
+                  <tr key={product._id} className="border border-gray-300">
+                    <td className="border border-gray-300 p-2 text-center">
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="w-16 h-16 object-cover mx-auto cursor-pointer"
+                        onClick={() => handleImageClick(product.imageUrl)}
+                      />
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      {product.name}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center w-48 max-w-xs whitespace-normal break-words overflow-hidden">
+                      {product.description}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      {formatCurrency(product.price)}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      {product.category}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      {product.isFeatured ? "✔️" : "❌"}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <Link
+                        to={`/edit-product/${product._id}`}
+                        className="text-blue-500 font-semibold"
+                      >
+                        O EDITAR
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteClick(product._id)}
+                        className="text-red-500 ml-2 font-semibold"
+                      >
+                        X ELIMINAR
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    )}
-    
+
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 pointer-events-auto"
+          onClick={() => setShowModal(false)} // Cierra el modal si se hace clic fuera de él
+        >
+          <div
+            className="bg-white p-6 rounded shadow-lg z-50"
+            onClick={(e) => e.stopPropagation()} // Evita que el clic dentro del modal cierre el modal
+          >
             <p className="text-xl mb-4">
               ¿Estás seguro de que deseas eliminar este producto?
             </p>
@@ -317,7 +352,6 @@ const Dashboard = () => {
           </div>
         </div>
       )}
-    
     </div>
   );
 };

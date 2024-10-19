@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProductForm = ({ productId, onSubmit }) => {
@@ -13,12 +12,11 @@ const ProductForm = ({ productId, onSubmit }) => {
     isVisible: true,
     isFeatured: false,
   });
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (productId) {
       axios
-        .get(`https://backpetshopboutique.onrender.com/${productId}`)
+        .get(`https://backpetshopboutique.onrender.com/api/products/${productId}`)
         .then((response) => {
           setProduct(response.data);
         })
