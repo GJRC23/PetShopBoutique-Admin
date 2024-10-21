@@ -53,7 +53,6 @@ const ProductForm = ({ productId, onSubmit }) => {
   };
 
   return (
-    <div>
       <form
         onSubmit={handleSubmit}
         className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg space-y-6"
@@ -168,7 +167,6 @@ const ProductForm = ({ productId, onSubmit }) => {
           Guardar
         </button>
       </form>
-    </div>
   );
 };
 

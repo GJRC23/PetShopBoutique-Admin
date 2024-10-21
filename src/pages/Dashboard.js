@@ -134,16 +134,16 @@ const Dashboard = () => {
         style={{ backgroundColor: "#FEFDF8" }}
       >
         <button
-            onClick={handleLogout}
-            className="logout-button font-semibold text-sm sm:text-base"
-          >
-            CERRAR SESIÓN
-          </button>
-          <img
-            src={logo}
-            alt="Logo Petshop Boutique"
-            className="w-48 h-48 object-cover mx-auto mb-4"
-          />
+          onClick={handleLogout}
+          className="logout-button font-semibold text-sm sm:text-base"
+        >
+          CERRAR SESIÓN
+        </button>
+        <img
+          src={logo}
+          alt="Logo Petshop Boutique"
+          className="w-48 h-48 object-cover mx-auto mb-4"
+        />
         <div
           className="sticky top-0 z-10 pb-4 bg-white"
           style={{ backgroundColor: "#FEFDF8" }}
@@ -287,19 +287,22 @@ const Dashboard = () => {
                       {product.isFeatured ? "✔️" : "❌"}
                     </td>
                     <td className="border border-gray-300 p-2 text-center">
-                      <Link
-                        to={`/edit-product/${product._id}`}
-                        className="text-blue-500 font-semibold"
-                      >
-                        O EDITAR
-                      </Link>
-                      <button
-                        onClick={() => handleDeleteClick(product._id)}
-                        className="text-red-500 ml-2 font-semibold"
-                      >
-                        X ELIMINAR
-                      </button>
-                    </td>
+  <div className="flex space-x-2 justify-center">
+    <Link
+      to={`/edit-product/${product._id}`}
+      className="bg-blue-500 text-white px-4 py-2 rounded font-semibold hover:bg-transparent hover:text-blue-500 border-2 border-blue-500 transition duration-300"
+    >
+      EDITAR
+    </Link>
+    <button
+      onClick={() => handleDeleteClick(product._id)}
+      className="bg-red-500 text-white px-4 py-2 rounded font-semibold hover:bg-transparent hover:text-red-500 border-2 border-red-500 transition duration-300"
+    >
+      ELIMINAR
+    </button>
+  </div>
+</td>
+
                   </tr>
                 ))}
             </tbody>

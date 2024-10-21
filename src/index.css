@@ -30,3 +30,7 @@ code {
 ::-webkit-scrollbar-button {
   display: none; /* Oculta las flechas */
 }
+
+select {
+  background-color: white !important;
+}

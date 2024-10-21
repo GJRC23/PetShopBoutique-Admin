@@ -27,37 +27,22 @@ const NewProduct = () => {
   return (
     <div
       className="min-h-screen bg-center bg-no-repeat bg-fixed bg-contain"
-      style={{
-        backgroundImage: "url('/images/FondoDashboardAdmin.png')",
-        backgroundColor: "#FBFBFD",
-      }}
+      style={{ backgroundColor: "#87563B" }}
     >
-      {/* Botón de regreso */}
-      <div className="fixed left-4 top-4 z-20">
+      <div className="flex items-center justify-between p-4 text-white">
         <button
           onClick={() => navigate("/administracion")}
-          className="text-6xl font-bold"
+          className="text-4xl font-bold md:text-6xl"
         >
           ←
         </button>
+        <h2 className="text-2xl md:text-3xl font-bold text-center flex-1">
+          AÑADIR PRODUCTO
+        </h2>
       </div>
 
-      {/* Contenedor principal */}
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        {/* Encabezado sticky */}
-        <div
-          className="sticky top-0 z-10 w-full bg-opacity-90"
-          style={{
-            backgroundColor: "#FBFBFD",
-          }}
-        >
-          <h2 className="text-3xl font-bold mb-4 mt-4 text-center">
-            AGREGAR PRODUCTO
-          </h2>
-        </div>
-
-        {/* Contenedor scrollable del formulario */}
-        <div className="max-h-[60vh] overflow-y-auto w-full max-w-4xl p-4 ">
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-4xl bg-[#FEFDF8] p-4 rounded-lg">
           <ProductForm onSubmit={handleCreateProduct} />
         </div>
       </div>
