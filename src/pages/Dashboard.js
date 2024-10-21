@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import logo from "./logo_boutique.png";
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
@@ -124,34 +125,33 @@ const Dashboard = () => {
   return (
     <div
       className="min-h-screen bg-center bg-no-repeat bg-fixed bg-contain"
-      style={{
-        backgroundImage: "url('/images/FondoDashboardAdmin.png')",
-        backgroundColor: "#FBFBFD",
-      }}
+      style={{ backgroundColor: "#87563B" }}
     >
       <div
-        className={`bg-white bg-opacity-80 p-6 rounded-lg max-w-6xl mx-auto shadow-lg ${
+        className={`bg-white p-6 rounded-lg max-w-6xl mx-auto shadow-lg ${
           showModal ? "pointer-events-none opacity-50" : ""
         }`}
+        style={{ backgroundColor: "#FEFDF8" }}
       >
-        <div className="sticky top-0 bg-white z-10">
-          <button
+        <button
             onClick={handleLogout}
             className="logout-button font-semibold text-sm sm:text-base"
           >
-            ← CERRAR SESIÓN
+            CERRAR SESIÓN
           </button>
-          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">
-            PETSHOP BOUTIQUE - ADMINISTRACIÓN DE PRODUCTOS
+          <img
+            src={logo}
+            alt="Logo Petshop Boutique"
+            className="w-48 h-48 object-cover mx-auto mb-4"
+          />
+        <div
+          className="sticky top-0 z-10 pb-4 bg-white"
+          style={{ backgroundColor: "#FEFDF8" }}
+        >
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 mt-8 text-center">
+            ADMINISTRACIÓN DE PRODUCTOS
           </h2>
-          <div className="text-green-500 mb-4">
-            <Link
-              to="/new-product"
-              className="text-green-500 mb-4 font-semibold"
-            >
-              + AGREGAR NUEVO PRODUCTO
-            </Link>
-          </div>
+
           <div className="overflow-x-auto mb-2">
             <div className="flex flex-wrap space-x-2 sm:space-x-3 justify-center mb-2">
               <button onClick={resetFilters} className="p-2 rounded">
@@ -163,13 +163,13 @@ const Dashboard = () => {
                 placeholder="Buscar por nombre"
                 value={filters.name}
                 onChange={handleFilterChange}
-                className="border p-2"
+                className="border p-2 w-full sm:w-auto"
               />
               <select
                 name="category"
                 value={filters.category}
                 onChange={handleFilterChange}
-                className="border p-2"
+                className="border p-2 w-full sm:w-auto"
               >
                 <option value="">Categorías</option>
                 <option value="Alimento">Alimento</option>
@@ -182,7 +182,7 @@ const Dashboard = () => {
                 name="animalType"
                 value={filters.animalType}
                 onChange={handleFilterChange}
-                className="border p-2"
+                className="border p-2 w-full sm:w-auto"
               >
                 <option value="">Animales</option>
                 <option value="Perro">Perro</option>
@@ -193,7 +193,7 @@ const Dashboard = () => {
                 name="sortBy"
                 value={filters.sortBy}
                 onChange={handleFilterChange}
-                className="border p-2"
+                className="border p-2 w-full sm:w-auto"
               >
                 <option value="">Ordenar Por</option>
                 <option value="name">Nombre</option>
@@ -203,7 +203,7 @@ const Dashboard = () => {
                 name="sortOrder"
                 value={filters.sortOrder}
                 onChange={handleFilterChange}
-                className="border p-2"
+                className="border p-2 w-full sm:w-auto"
               >
                 <option value="asc">Ascendente</option>
                 <option value="desc">Descendente</option>
@@ -212,7 +212,7 @@ const Dashboard = () => {
                 name="isFeatured"
                 value={filters.isFeatured}
                 onChange={handleFilterChange}
-                className="border p-2"
+                className="border p-2 w-full sm:w-auto"
               >
                 <option value="">Todos</option>
                 <option value="true">Destacados</option>
@@ -220,10 +220,20 @@ const Dashboard = () => {
               </select>
             </div>
           </div>
+
+          <div className="flex justify-center">
+            <Link
+              to="/new-product"
+              className="bg-green-500 text-white px-4 py-2 rounded font-semibold border border-transparent
+               hover:bg-transparent hover:text-green-500 hover:border-green-500 transition-all duration-300"
+            >
+              + NUEVO PRODUCTO
+            </Link>
+          </div>
         </div>
 
         <div className="max-h-[60vh] overflow-y-auto">
-          <table className="w-full my-4 border-collapse border border-gray-300">
+          <table className="w-full my-4 border-collapse border border-gray-300 text-sm sm:text-base">
             <thead>
               <tr>
                 <th className="border border-gray-300 p-2 text-center">
@@ -329,7 +339,7 @@ const Dashboard = () => {
 
       {selectedImage && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+          className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 pointer-events-auto"
           onClick={closeImagePopup}
         >
           <div className="relative">
@@ -337,7 +347,7 @@ const Dashboard = () => {
               src={selectedImage}
               alt="Producto"
               style={{
-                maxWidth: "600px",
+                maxWidth: "375px",
                 maxHeight: "80vh",
                 width: "auto",
                 height: "auto",
