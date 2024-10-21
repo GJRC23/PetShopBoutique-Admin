@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
-import logo from "./logo_boutique.png";
+import logo from "./logo_boutique.jpeg";
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
