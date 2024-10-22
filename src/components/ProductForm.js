@@ -13,8 +13,6 @@ const ProductForm = ({ productId, onSubmit }) => {
     isFeatured: false,
   });
 
-  const [imageFile, setImageFile] = useState(null);
-
   useEffect(() => {
     if (productId) {
       axios
@@ -34,48 +32,17 @@ const ProductForm = ({ productId, onSubmit }) => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file); // Guardar el archivo de imagen seleccionado
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProduct({ ...product, imageUrl: reader.result });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Crear el objeto FormData
-    const formData = new FormData();
-    formData.append("name", product.name);
-    formData.append("description", product.description);
-    formData.append("price", product.price);
-    formData.append("category", product.category);
-    formData.append("animalType", product.animalType);
-    formData.append("isVisible", product.isVisible);
-    formData.append("isFeatured", product.isFeatured);
-    if (imageFile) {
-      formData.append("image", imageFile); // Agregar la imagen al FormData
-    }
-
-    try {
-      // Realizar la solicitud POST o PUT dependiendo si es creación o actualización
-      const url = productId
-        ? `https://backpetshopboutique.onrender.com/api/products/${productId}`
-        : "https://backpetshopboutique.onrender.com/api/products";
-
-      const method = productId ? "put" : "post";
-
-      await axios({
-        method: method,
-        url: url,
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // Llamar al callback onSubmit para manejar la respuesta
-      onSubmit();
-    } catch (error) {
-      console.error("Error al guardar el producto:", error);
-    }
+    onSubmit(product);
   };
 
   const formatCurrency = (value) => {
