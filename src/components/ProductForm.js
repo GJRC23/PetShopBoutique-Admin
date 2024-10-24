@@ -17,7 +17,7 @@ const ProductForm = ({ productId, onSubmit }) => {
     if (productId) {
       axios
         .get(
-          `https://backpetshopboutique.onrender.com/api/products/${productId}`
+          `https://admin-petshop-boutique.vercel.app/api/products/${productId}`
         )
         .then((response) => {
           setProduct(response.data);

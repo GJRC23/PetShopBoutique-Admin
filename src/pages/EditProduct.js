@@ -14,7 +14,7 @@ const EditProduct = () => {
   const handleUpdateProduct = (updatedProduct) => {
     axios
       .put(
-        `https://backpetshopboutique.onrender.com/api/products/${id}`,
+        `https://admin-petshop-boutique.vercel.app/api/products/${id}`,
         updatedProduct
       )
       .then(() => {

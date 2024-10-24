@@ -12,7 +12,7 @@ const NewProduct = () => {
 
   const handleCreateProduct = (product) => {
     axios
-      .post("https://backpetshopboutique.onrender.com/api/products", product)
+      .post("https://admin-petshop-boutique.vercel.app/api/products", product)
       .then(() => {
         navigate("/administracion");
       })

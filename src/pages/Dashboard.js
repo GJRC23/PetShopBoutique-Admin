@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   const fetchAllProducts = () => {
     axios
-      .get("https://backpetshopboutique.onrender.com/api/products")
+      .get("https://admin-petshop-boutique.vercel.app/api/products")
       .then((response) => setProducts(response.data))
       .catch((error) =>
         console.error("Error al obtener los productos:", error)
@@ -44,7 +44,7 @@ const Dashboard = () => {
       };
 
       axios
-        .get("https://backpetshopboutique.onrender.com/api/products", {
+        .get("https://admin-petshop-boutique.vercel.app/api/products", {
           params: cleanFilters,
         })
         .then((response) => setProducts(response.data))
@@ -83,7 +83,7 @@ const Dashboard = () => {
     if (productToDelete) {
       axios
         .delete(
-          `https://backpetshopboutique.onrender.com/api/products/${productToDelete}`
+          `https://admin-petshop-boutique.vercel.app/api/products/${productToDelete}`
         )
         .then(() => {
           setProducts(
