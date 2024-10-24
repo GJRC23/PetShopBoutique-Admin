@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "petshop-boutique"
+    "default": "petshop-boutique",
+    "admin": "petshop-boutique"
   },
   "targets": {},
   "etags": {}
